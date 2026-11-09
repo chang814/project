@@ -8,6 +8,10 @@
 - 人机模式有六档难度，较高难度使用 Alpha-Beta 剪枝、迭代加深和连续冲四搜索。
 - 支持悔棋、存档、读档、复盘和棋谱导出。
 
+## 下载即玩
+
+[下载 Windows x64 免安装版](https://github.com/chang814/project/releases/download/windows-2026-11-09/Gobang-Windows-x64.zip)，完整解压到可写目录后，双击 `gobang.exe`。存档会写入运行目录。
+
 ## 编译运行
 
 在 Windows 上准备 TDM-GCC 4.9.2 x64（Dev-C++ 5.11 随附的 MinGW64）和 EGE 20.08，确保 EGE 安装包含 build_ege.bat 使用的 lib\devcpp\graphics64 库。在本目录的 PowerShell 中设置 MINGW_HOME 和 EGE_HOME，再运行脚本。

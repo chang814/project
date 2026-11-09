@@ -27,11 +27,13 @@
 
 ## Windows 桌面版
 
+[下载畅记 v1.1.3 Windows x64 免安装版](https://github.com/chang814/project/releases/download/windows-2026-11-09/Changji-v1.1.3-Windows-x64.exe)，双击运行。也可从源码自行构建：
+
     npm ci
     npm run desktop
     npm run build:win
 
-便携版构建输出到 release/v1.1/。网页副本为 v1.1.3，桌面打包配置沿用 v1.1。
+便携版构建输出到 `release/v1.1/`。
 
 ## 项目结构
 

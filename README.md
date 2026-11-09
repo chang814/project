@@ -4,6 +4,9 @@
 
 **[打开畅记网页版](https://chang814.github.io/project/)**，打开浏览器即可练习，内置原创示例词条。
 
+- [下载畅记 Windows 免安装版](https://github.com/chang814/project/releases/download/windows-2026-11-09/Changji-v1.1.3-Windows-x64.exe)，双击运行。
+- [下载五子棋 Windows 免安装版](https://github.com/chang814/project/releases/download/windows-2026-11-09/Gobang-Windows-x64.zip)，解压后运行 `gobang.exe`。
+
 | 项目 | 项目背景 | 主要功能 | 技术 |
 | --- | --- | --- | --- |
 | [五子棋对战游戏](gobang/README.md) | 《程序设计训练》课程团队实践作业 | 双人、人机和局域网对战，支持存档与复盘 | C、C++、EGE、Winsock2 |
