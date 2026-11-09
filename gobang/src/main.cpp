@@ -1,8 +1,8 @@
 /*==============================================================================
- * ÎÄ¼şÃû³Æ£ºmain.cpp
- * ËùÊôÏîÄ¿£ºÎå×ÓÆå¶ÔÕ½ÓÎÏ·£¨Ë«ÈË¡¤ÈË»ú¡¤ÁªÍø¶ÔÕ½£©  µÚ15Ğ¡×é
- * Ä£¿é¹éÊô£ºÖ÷¿ØÄ£¿é
- * ¹¦ÄÜÃèÊö£º³ÌĞòÈë¿ÚÓëÓÎÏ·Ö÷Ñ­»·¡£
+ * æ–‡ä»¶åç§°ï¼šmain.cpp
+ * æ‰€å±é¡¹ç›®ï¼šäº”å­æ£‹å¯¹æˆ˜æ¸¸æˆï¼ˆåŒäººÂ·äººæœºÂ·è”ç½‘å¯¹æˆ˜ï¼‰  ç¬¬15å°ç»„
+ * æ¨¡å—å½’å±ï¼šä¸»æ§æ¨¡å—
+ * åŠŸèƒ½æè¿°ï¼šç¨‹åºå…¥å£ä¸æ¸¸æˆä¸»å¾ªç¯ã€‚
  *============================================================================*/
 #include <graphics.h>
 
@@ -36,22 +36,22 @@ static int      g_hoverCol = -1;
 static int      g_prevState = STATE_MENU;
 static char     g_joinIp[64] = "127.0.0.1";
 
-/* ÄÑ¶ÈÏêÇéµ¯´° */
+/* éš¾åº¦è¯¦æƒ…å¼¹çª— */
 static int g_showDiffDialog = 0;
 static int g_pendingLevel   = LEVEL_NORMAL;
 static int g_pendingStyle   = STYLE_NORMAL;
 
-/* Ëã·¨°Ù¿ÆÒ³£¨²úÆ·½éÉÜ / AI ·¢Õ¹Àú³Ì + ´úÂëÖğĞĞ½²½â£© */
+/* ç®—æ³•ç™¾ç§‘é¡µï¼ˆäº§å“ä»‹ç» / AI å‘å±•å†ç¨‹ + ä»£ç é€è¡Œè®²è§£ï¼‰ */
 static int g_showAlgoBook = 0;
 static int g_algoPage     = 0;
 
-/* ÆåÆ×»Ø·Å */
+/* æ£‹è°±å›æ”¾ */
 static Move     g_replayMoves[MAX_MOVES];
 static int      g_replayCount = 0;
 static int      g_replayIndex = 0;
 static GameInfo g_replayInfo;
 
-/* »Ø·ÅÕóĞÍ¸ßÁÁ£º½öÔÚÕóĞÍĞÂ³ÉĞÍµÄÄÇÒ»²½¸ßÁÁÆå×Ó */
+/* å›æ”¾é˜µå‹é«˜äº®ï¼šä»…åœ¨é˜µå‹æ–°æˆå‹çš„é‚£ä¸€æ­¥é«˜äº®æ£‹å­ */
 static int g_replayHighlightRows[32];
 static int g_replayHighlightCols[32];
 static int g_replayHighlightCount = 0;
@@ -69,13 +69,13 @@ static void set_message(const char *fmt, ...) {
 	va_end(ap);
 }
 
-/* ÕóĞÍ¼ì²â²¥±¨:Ã¿´ÎÂä×Ó/»ÚÆå/¶Áµµºóµ÷ÓÃ¡£
- * È¥ÖØÔ­Ôò:½öµ±Ä³·½Õó·¨¡¸Ïà±ÈÉÏÒ»ÊÖÊÇĞÂ³öÏÖ/·¢Éú±ä»¯¡¹Ê±²ÅÍÆËÍÒ»Ìõ,
- * ±ÜÃâÍ¬Ò»Õó·¨ÔÚºÚ°×Ë«·½ÖØ¸´²¥±¨¡¢Ò²±ÜÃâ³ÉĞÍºóÃ¿²½·´¸´Ë¢ÆÁ¡£ */
+/* é˜µå‹æ£€æµ‹æ’­æŠ¥:æ¯æ¬¡è½å­/æ‚”æ£‹/è¯»æ¡£åè°ƒç”¨ã€‚
+ * å»é‡åŸåˆ™:ä»…å½“æŸæ–¹é˜µæ³•ã€Œç›¸æ¯”ä¸Šä¸€æ‰‹æ˜¯æ–°å‡ºç°/å‘ç”Ÿå˜åŒ–ã€æ—¶æ‰æ¨é€ä¸€æ¡,
+ * é¿å…åŒä¸€é˜µæ³•åœ¨é»‘ç™½åŒæ–¹é‡å¤æ’­æŠ¥ã€ä¹Ÿé¿å…æˆå‹åæ¯æ­¥åå¤åˆ·å±ã€‚ */
 static FormationType s_prevBlack = FORMATION_NONE;
 static FormationType s_prevWhite = FORMATION_NONE;
 
-/* ¶Ô¾ÖÕóĞÍ¸ßÁÁ£ºÕóĞÍĞÂ³ÉĞÍÊ±¸ßÁÁÆå×Ó£¬ÏÂÒ»²½ºó×Ô¶¯ÏûÊ§ */
+/* å¯¹å±€é˜µå‹é«˜äº®ï¼šé˜µå‹æ–°æˆå‹æ—¶é«˜äº®æ£‹å­ï¼Œä¸‹ä¸€æ­¥åè‡ªåŠ¨æ¶ˆå¤± */
 static int g_gameHighlightRows[32];
 static int g_gameHighlightCols[32];
 static int g_gameHighlightCount = 0;
@@ -86,12 +86,12 @@ static void update_formation_report(void) {
 	char buf[128];
 
 	if (g_state != STATE_GAME)
-		return;   /* ½öÔÚ¶Ô¾ÖÖĞ²¥±¨ */
+		return;   /* ä»…åœ¨å¯¹å±€ä¸­æ’­æŠ¥ */
 
 	blackF = ai_detect_formation(&g_board, CELL_BLACK);
 	whiteF = ai_detect_formation(&g_board, CELL_WHITE);
 
-	/* Ã¿²½ÏÈÇå³ıÉÏÒ»²½µÄ¸ßÁÁºÍÊÂ¼ş£¨ÕóĞÍ¸ßÁÁ/½éÉÜÖ»ÔÚ³ÉĞÍÄÇÒ»²½ÏÔÊ¾£© */
+	/* æ¯æ­¥å…ˆæ¸…é™¤ä¸Šä¸€æ­¥çš„é«˜äº®å’Œäº‹ä»¶ï¼ˆé˜µå‹é«˜äº®/ä»‹ç»åªåœ¨æˆå‹é‚£ä¸€æ­¥æ˜¾ç¤ºï¼‰ */
 	g_gameHighlightCount = 0;
 	ui_set_formation_event(NULL);
 
@@ -119,7 +119,7 @@ static void update_formation_report(void) {
 	s_prevWhite = whiteF;
 }
 
-/* Õó·¨²¥±¨ÀúÊ·ÖØÖÃ(ĞÂ¿ª¾Ö/¶ÁµµÇ°µ÷ÓÃ) */
+/* é˜µæ³•æ’­æŠ¥å†å²é‡ç½®(æ–°å¼€å±€/è¯»æ¡£å‰è°ƒç”¨) */
 static void clear_formation_report(void) {
 	ui_set_formation_report(NULL);
 	ui_set_formation_event(NULL);
@@ -149,13 +149,13 @@ static int is_local_turn(void) {
 static int announce_result(void) {
 	switch (g_board.status) {
 		case GAME_BLACK_WIN:
-			set_message("Îå×ÓÁ¬Öé£¬ºÚ·½»ñÊ¤£¡");
+			set_message("äº”å­è¿ç ï¼Œé»‘æ–¹è·èƒœï¼");
 			return 1;
 		case GAME_WHITE_WIN:
-			set_message("Îå×ÓÁ¬Öé£¬°×·½»ñÊ¤£¡");
+			set_message("äº”å­è¿ç ï¼Œç™½æ–¹è·èƒœï¼");
 			return 1;
 		case GAME_DRAW:
-			set_message("ÆåÅÌÒÑÏÂÂú£¬±¾¾ÖÎªºÍÆå¡£");
+			set_message("æ£‹ç›˜å·²ä¸‹æ»¡ï¼Œæœ¬å±€ä¸ºå’Œæ£‹ã€‚");
 			return 1;
 		default:
 			return 0;
@@ -171,18 +171,18 @@ static void start_new_game(int mode) {
 	g_hoverCol = -1;
 	g_state    = STATE_GAME;
 
-	/* ĞÂ¿ª¾Ö:Çå¿ÕÉÏÒ»¾ÖµÄÕó·¨²¥±¨ */
+	/* æ–°å¼€å±€:æ¸…ç©ºä¸Šä¸€å±€çš„é˜µæ³•æ’­æŠ¥ */
 	clear_formation_report();
 
 	if (mode == MODE_PVE) {
-		set_message("ÈË»ú¶ÔÕ½¿ªÊ¼£¬ÄÑ¶È%s£¬Íæ¼ÒÖ´%s¡£",
+		set_message("äººæœºå¯¹æˆ˜å¼€å§‹ï¼Œéš¾åº¦%sï¼Œç©å®¶æ‰§%sã€‚",
 		            ai_level_text(g_info.level),
-		            (g_info.humanColor == CELL_BLACK) ? "ºÚÏÈĞĞ" : "°×ºóĞĞ");
+		            (g_info.humanColor == CELL_BLACK) ? "é»‘å…ˆè¡Œ" : "ç™½åè¡Œ");
 	} else if (mode == MODE_NET) {
-		set_message("ÁªÍø¶ÔÕ½¿ªÊ¼£¬±¾»úÖ´%s¡£",
-		            (g_info.humanColor == CELL_BLACK) ? "ºÚÏÈĞĞ" : "°×ºóĞĞ");
+		set_message("è”ç½‘å¯¹æˆ˜å¼€å§‹ï¼Œæœ¬æœºæ‰§%sã€‚",
+		            (g_info.humanColor == CELL_BLACK) ? "é»‘å…ˆè¡Œ" : "ç™½åè¡Œ");
 	} else {
-		set_message("Ë«ÈË¶ÔÕ½¿ªÊ¼£¬ºÚ·½ÏÈĞĞ¡£");
+		set_message("åŒäººå¯¹æˆ˜å¼€å§‹ï¼Œé»‘æ–¹å…ˆè¡Œã€‚");
 	}
 
 	input_flush();
@@ -200,7 +200,7 @@ static void do_place(int row, int col) {
 
 	record_coord_to_text(row, col, coord, (int)sizeof(coord));
 	if (!announce_result()) {
-		set_message("Âä×ÓÓÚ %s¡£", coord);
+		set_message("è½å­äº %sã€‚", coord);
 	}
 
 	if (g_info.mode == MODE_NET) {
@@ -214,18 +214,18 @@ static void do_undo(void) {
 	int steps;
 
 	if (g_board.moveCount == 0) {
-		set_message("µ±Ç°»¹Ã»ÓĞÂä×Ó£¬ÎŞ·¨»ÚÆå¡£");
+		set_message("å½“å‰è¿˜æ²¡æœ‰è½å­ï¼Œæ— æ³•æ‚”æ£‹ã€‚");
 		return;
 	}
 
 	if (g_info.mode == MODE_NET) {
 		if (g_board.moveCount < 2) {
-			set_message("ÖÁÉÙÂäÂúÁ½ÊÖ²ÅÄÜ»ÚÆå¡£");
+			set_message("è‡³å°‘è½æ»¡ä¸¤æ‰‹æ‰èƒ½æ‚”æ£‹ã€‚");
 			return;
 		}
 		steps = board_undo_steps(&g_board, 2);
 		net_send("UNDO");
-		set_message("ÒÑ»ÚÆå %d ²½£¬µ±Ç°¹² %d ÊÖ¡£", steps, g_board.moveCount);
+		set_message("å·²æ‚”æ£‹ %d æ­¥ï¼Œå½“å‰å…± %d æ‰‹ã€‚", steps, g_board.moveCount);
 		update_formation_report();
 		return;
 	}
@@ -239,7 +239,7 @@ static void do_undo(void) {
 		steps += board_undo(&g_board);
 	}
 
-	set_message("ÒÑ»ÚÆå %d ²½£¬µ±Ç°¹² %d ÊÖ¡£", steps, g_board.moveCount);
+	set_message("å·²æ‚”æ£‹ %d æ­¥ï¼Œå½“å‰å…± %d æ‰‹ã€‚", steps, g_board.moveCount);
 	update_formation_report();
 }
 
@@ -247,7 +247,7 @@ static void do_resign(void) {
 	int loser;
 
 	if (g_board.status != GAME_PLAYING) {
-		set_message("±¾¾ÖÒÑ¾­½áÊøÁË¡£");
+		set_message("æœ¬å±€å·²ç»ç»“æŸäº†ã€‚");
 		return;
 	}
 
@@ -257,9 +257,9 @@ static void do_resign(void) {
 	}
 	board_resign(&g_board, loser);
 
-	set_message("%sÈÏÊä£¬%s»ñÊ¤¡£",
-	            (loser == CELL_BLACK) ? "ºÚ·½" : "°×·½",
-	            (loser == CELL_BLACK) ? "°×·½" : "ºÚ·½");
+	set_message("%sè®¤è¾“ï¼Œ%sè·èƒœã€‚",
+	            (loser == CELL_BLACK) ? "é»‘æ–¹" : "ç™½æ–¹",
+	            (loser == CELL_BLACK) ? "ç™½æ–¹" : "é»‘æ–¹");
 
 	if (g_info.mode == MODE_NET) {
 		net_send("RESIGN");
@@ -272,25 +272,25 @@ static void do_save(void) {
 	int  ret;
 
 	if (g_board.moveCount == 0) {
-		set_message("µ±Ç°»¹Ã»ÓĞÂä×Ó£¬ÎŞĞè±£´æ¡£");
+		set_message("å½“å‰è¿˜æ²¡æœ‰è½å­ï¼Œæ— éœ€ä¿å­˜ã€‚");
 		return;
 	}
 
 	record_default_path(path, (int)sizeof(path), RECORD_DIR, NULL);
 	ret = record_save(&g_board, &g_info, path);
 	if (ret != RECORD_OK) {
-		set_message("±£´æÊ§°Ü£º%s", record_error(ret));
+		set_message("ä¿å­˜å¤±è´¥ï¼š%s", record_error(ret));
 		return;
 	}
 
 	record_default_path(readable, (int)sizeof(readable), RECORD_DIR, "qipu");
 	ret = record_export(&g_board, &g_info, readable);
 	if (ret != RECORD_OK) {
-		set_message("´æµµÒÑ±£´æµ½ %s£»ÆåÆ×µ¼³öÊ§°Ü£º%s", path, record_error(ret));
+		set_message("å­˜æ¡£å·²ä¿å­˜åˆ° %sï¼›æ£‹è°±å¯¼å‡ºå¤±è´¥ï¼š%s", path, record_error(ret));
 		return;
 	}
 
-	set_message("ÒÑ±£´æ£º%s£¨Áí¸½¿É¶ÁÆåÆ× %s£©", path, readable);
+	set_message("å·²ä¿å­˜ï¼š%sï¼ˆå¦é™„å¯è¯»æ£‹è°± %sï¼‰", path, readable);
 }
 
 static void open_browser(void) {
@@ -315,19 +315,19 @@ static void replay_build(int index) {
 	if (index > g_replayCount)
 		index = g_replayCount;
 
-	/* ÏÈ¹¹½¨ÉÏÒ»²½¾ÖÃæ£¨ÓÃÓÚ¼ì²âÕóĞÍÊÇ·ñÔÚÕâÒ»²½ĞÂ³ÉĞÍ£© */
+	/* å…ˆæ„å»ºä¸Šä¸€æ­¥å±€é¢ï¼ˆç”¨äºæ£€æµ‹é˜µå‹æ˜¯å¦åœ¨è¿™ä¸€æ­¥æ–°æˆå‹ï¼‰ */
 	board_init(&prevBoard);
 	for (i = 0; i < index - 1; i++) {
 		board_place(&prevBoard, g_replayMoves[i].row, g_replayMoves[i].col);
 	}
 
-	/* ¹¹½¨µ±Ç°¾ÖÃæ */
+	/* æ„å»ºå½“å‰å±€é¢ */
 	board_init(&g_board);
 	for (i = 0; i < index; i++) {
 		board_place(&g_board, g_replayMoves[i].row, g_replayMoves[i].col);
 	}
 
-	/* ×îºóÒ»²½¿ÉÄÜÊÇÈÏÊäµÈÌØÊâ½áÊø£¬»Ö¸´×îÖÕ×´Ì¬ */
+	/* æœ€åä¸€æ­¥å¯èƒ½æ˜¯è®¤è¾“ç­‰ç‰¹æ®Šç»“æŸï¼Œæ¢å¤æœ€ç»ˆçŠ¶æ€ */
 	if (index == g_replayCount) {
 		board_set_status(&g_board, g_replayFinalStatus);
 		if (g_replayHasWinLine) {
@@ -339,7 +339,7 @@ static void replay_build(int index) {
 		}
 	}
 
-	/* ÕóĞÍ¸ßÁÁ¼ì²â£º½öµ±ÕâÒ»²½ĞÂ³ÉĞÍÕó·¨Ê±¸ßÁÁ£¬ÏÂÒ»²½ºó×Ô¶¯ÏûÊ§ */
+	/* é˜µå‹é«˜äº®æ£€æµ‹ï¼šä»…å½“è¿™ä¸€æ­¥æ–°æˆå‹é˜µæ³•æ—¶é«˜äº®ï¼Œä¸‹ä¸€æ­¥åè‡ªåŠ¨æ¶ˆå¤± */
 	g_replayHighlightCount = 0;
 	if (index > 0) {
 		FormationType curBlack  = ai_detect_formation(&g_board, CELL_BLACK);
@@ -369,11 +369,11 @@ static void load_save_path(const char *path) {
 
 	ret = record_load(&loadedBoard, &loadedInfo, path);
 	if (ret != RECORD_OK) {
-		set_message("¶ÁÈ¡Ê§°Ü£º%s", record_error(ret));
+		set_message("è¯»å–å¤±è´¥ï¼š%s", record_error(ret));
 		return;
 	}
 
-	/* ±£´æ×ß·¨¼ÇÂ¼ºÍ×îÖÕ×´Ì¬ÓÃÓÚ»Ø·Å */
+	/* ä¿å­˜èµ°æ³•è®°å½•å’Œæœ€ç»ˆçŠ¶æ€ç”¨äºå›æ”¾ */
 	g_replayCount = loadedBoard.moveCount;
 	for (i = 0; i < g_replayCount; i++) {
 		g_replayMoves[i] = loadedBoard.moves[i];
@@ -390,15 +390,15 @@ static void load_save_path(const char *path) {
 	g_state   = STATE_REPLAY;
 	g_hoverId = BTN_NONE;
 
-	/* Ä¬ÈÏÏÔÊ¾×îÖÕ¾ÖÃæ */
+	/* é»˜è®¤æ˜¾ç¤ºæœ€ç»ˆå±€é¢ */
 	replay_build(g_replayCount);
 
-	set_message("ÒÑÔØÈëÆåÆ×£¬¹² %d ÊÖ£¬¿ÉÖğ²½»Ø·Å¡£", g_replayCount);
+	set_message("å·²è½½å…¥æ£‹è°±ï¼Œå…± %d æ‰‹ï¼Œå¯é€æ­¥å›æ”¾ã€‚", g_replayCount);
 	input_flush();
 }
 
 static void load_frame(void) {
-	const int rowTop   = 128;      /* Óë ui_draw_browser ±£³ÖÒ»ÖÂ */
+	const int rowTop   = 128;      /* ä¸ ui_draw_browser ä¿æŒä¸€è‡´ */
 	const int rowStep  = 58;
 	const int maxRows  = 9;
 	UiButton  buttons[RECORD_MAX_LIST + 1];
@@ -414,7 +414,7 @@ static void load_frame(void) {
 	buttons[buttonCount].w    = 240;
 	buttons[buttonCount].h    = 40;
 	buttons[buttonCount].id   = BTN_LOAD_BACK;
-	buttons[buttonCount].text = "·µ  »Ø";
+	buttons[buttonCount].text = "è¿”  å›";
 	buttonCount++;
 
 	maxScroll = (g_saveCount > maxRows) ? (g_saveCount - maxRows) : 0;
@@ -429,15 +429,15 @@ static void load_frame(void) {
 		char  date[16];
 		char  clockTime[8];
 
-		snprintf(date, sizeof(date), "%.4sÄê%.2sÔÂ%.2sÈÕ", e->stamp, e->stamp + 4, e->stamp + 6);
+		snprintf(date, sizeof(date), "%.4så¹´%.2sæœˆ%.2sæ—¥", e->stamp, e->stamp + 4, e->stamp + 6);
 		snprintf(clockTime, sizeof(clockTime), "%.2s:%.2s", e->stamp + 9, e->stamp + 11);
 
 		snprintf(g_rowText[rowCount], sizeof(g_rowText[rowCount]),
-		         "%s %s   %s   ¹² %d ÊÖ", date, clockTime, common_status_text(e->status), e->moveCount);
+		         "%s %s   %s   å…± %d æ‰‹", date, clockTime, common_status_text(e->status), e->moveCount);
 		rows[rowCount].text = g_rowText[rowCount];
 
 		snprintf(g_subText[rowCount], sizeof(g_subText[rowCount]),
-		         "%s ¡¤ %sÄÑ¶È", common_mode_text(e->mode), common_level_text(e->level));
+		         "%s Â· %séš¾åº¦", common_mode_text(e->mode), common_level_text(e->level));
 		rows[rowCount].subtext = g_subText[rowCount];
 
 		rows[rowCount].y  = rowTop + i * rowStep;
@@ -455,7 +455,7 @@ static void load_frame(void) {
 	}
 
 	if (g_saveCount == 0) {
-		set_message("ÔİÎŞ´æµµ£¬ÇëÏÈÔÚ¶Ô¾ÖÖĞµã»÷±£´æÆåÆ×°´Å¥¡£");
+		set_message("æš‚æ— å­˜æ¡£ï¼Œè¯·å…ˆåœ¨å¯¹å±€ä¸­ç‚¹å‡»ä¿å­˜æ£‹è°±æŒ‰é’®ã€‚");
 	}
 
 	while (input_poll(buttons, buttonCount, 0, &ev)) {
@@ -496,23 +496,23 @@ static void run_ai_turn(void) {
 	             g_gameHighlightRows, g_gameHighlightCols, g_gameHighlightCount);
 	ui_flush();
 
-	/* Ó¦ÓÃµ±Ç°·ç¸ñ(ÆÕÍ¨¼°ÒÔÏÂÄÑ¶È¹Ì¶¨ÆÕÍ¨ĞÍ) */
+	/* åº”ç”¨å½“å‰é£æ ¼(æ™®é€šåŠä»¥ä¸‹éš¾åº¦å›ºå®šæ™®é€šå‹) */
 	ai_set_style((g_info.level >= LEVEL_HARD) ? g_info.style : STYLE_NORMAL);
 	ret = ai_choose(&g_board, ai_color(), g_info.level, &row, &col);
 	if (ret != AI_OK) {
-		set_message("µçÄÔÎŞ´¦¿ÉÏÂ¡£");
+		set_message("ç”µè„‘æ— å¤„å¯ä¸‹ã€‚");
 		return;
 	}
 
 	ret = board_place(&g_board, row, col);
 	if (ret != PLACE_OK) {
-		set_message("µçÄÔÂä×ÓÒì³££º%s", board_place_error(ret));
+		set_message("ç”µè„‘è½å­å¼‚å¸¸ï¼š%s", board_place_error(ret));
 		return;
 	}
 
 	record_coord_to_text(row, col, coord, (int)sizeof(coord));
 	if (!announce_result()) {
-		set_message("µçÄÔÂä×ÓÓÚ %s£¬ÓÃÊ± %d ºÁÃë£¬ËÑË÷Éî¶È %d¡£",
+		set_message("ç”µè„‘è½å­äº %sï¼Œç”¨æ—¶ %d æ¯«ç§’ï¼Œæœç´¢æ·±åº¦ %dã€‚",
 		            coord, ai_last_time_ms(), ai_last_depth());
 	}
 
@@ -614,7 +614,7 @@ static void handle_game_button(int buttonId) {
 
 static void start_net_host(void) {
 	if (net_host_start(NET_DEFAULT_PORT) != 0) {
-		set_message("´´½¨·¿¼äÊ§°Ü£º¶Ë¿Ú¿ÉÄÜ±»Õ¼ÓÃ¡£");
+		set_message("åˆ›å»ºæˆ¿é—´å¤±è´¥ï¼šç«¯å£å¯èƒ½è¢«å ç”¨ã€‚");
 		return;
 	}
 	g_info.mode       = MODE_NET;
@@ -622,7 +622,7 @@ static void start_net_host(void) {
 	g_prevState       = STATE_MENU;
 	g_hoverId         = BTN_NONE;
 	g_state           = STATE_NET;
-	set_message("µÈ´ı¶Ô·½Á¬½Ó£¨±¾»ú IP£º%s£¬¶Ë¿Ú %d£©¡­¡­", net_local_ip(), NET_DEFAULT_PORT);
+	set_message("ç­‰å¾…å¯¹æ–¹è¿æ¥ï¼ˆæœ¬æœº IPï¼š%sï¼Œç«¯å£ %dï¼‰â€¦â€¦", net_local_ip(), NET_DEFAULT_PORT);
 	input_flush();
 }
 
@@ -636,11 +636,11 @@ static void start_net_join(void) {
 
 static int try_connect(void) {
 	if (g_joinIp[0] == '\0') {
-		set_message("ÇëÏÈÊäÈë IP µØÖ·¡£");
+		set_message("è¯·å…ˆè¾“å…¥ IP åœ°å€ã€‚");
 		return 0;
 	}
 	if (net_join_start(g_joinIp, NET_DEFAULT_PORT) != 0) {
-		set_message("ÎŞ·¨Á¬½Ó·şÎñÆ÷ %s£¬Çë¼ì²é IP ÓëÍøÂç¡£", g_joinIp);
+		set_message("æ— æ³•è¿æ¥æœåŠ¡å™¨ %sï¼Œè¯·æ£€æŸ¥ IP ä¸ç½‘ç»œã€‚", g_joinIp);
 		return 0;
 	}
 	g_info.mode       = MODE_NET;
@@ -648,15 +648,15 @@ static int try_connect(void) {
 	g_prevState       = STATE_MENU;
 	g_hoverId         = BTN_NONE;
 	g_state           = STATE_NET;
-	set_message("ÕıÔÚÁ¬½Ó·şÎñÆ÷ %s ¡­¡­", g_joinIp);
+	set_message("æ­£åœ¨è¿æ¥æœåŠ¡å™¨ %s â€¦â€¦", g_joinIp);
 	input_flush();
 	return 1;
 }
 
 static void net_join_frame(void) {
 	static const UiButton buttons[] = {
-		{ 390, 355, 180, 44, BTN_NET_CONNECT, "Á¬  ½Ó" },
-		{ 610, 355, 180, 44, BTN_JOIN_BACK,    "·µ  »Ø" }
+		{ 390, 355, 180, 44, BTN_NET_CONNECT, "è¿  æ¥" },
+		{ 610, 355, 180, 44, BTN_JOIN_BACK,    "è¿”  å›" }
 	};
 	const int btnCount = 2;
 	static int cursorBlink = 1;
@@ -664,18 +664,18 @@ static void net_join_frame(void) {
 	UiEvent ev;
 	int len;
 
-	/* ¹â±êÉÁË¸¼ÆÊ±£¨Ô¼ 60fps£¬30 Ö¡ÇĞ»»Ò»´Î£© */
+	/* å…‰æ ‡é—ªçƒè®¡æ—¶ï¼ˆçº¦ 60fpsï¼Œ30 å¸§åˆ‡æ¢ä¸€æ¬¡ï¼‰ */
 	blinkCounter++;
 	if (blinkCounter >= 30) {
 		blinkCounter = 0;
 		cursorBlink = !cursorBlink;
 	}
 
-	/* ´¦Àí¼üÅÌÊäÈë */
+	/* å¤„ç†é”®ç›˜è¾“å…¥ */
 	while (kbmsg()) {
 		key_msg k = getkey();
 
-		/* ¿É´òÓ¡×Ö·û£ºkey_msg_char µÄ key ÒÑÊÇ ASCII Âë£¨º¬ Shift ×ª»»£© */
+		/* å¯æ‰“å°å­—ç¬¦ï¼škey_msg_char çš„ key å·²æ˜¯ ASCII ç ï¼ˆå« Shift è½¬æ¢ï¼‰ */
 		if (k.msg == key_msg_char) {
 			len = (int)strlen(g_joinIp);
 			if ((k.key >= '0' && k.key <= '9') || k.key == '.') {
@@ -686,15 +686,15 @@ static void net_join_frame(void) {
 				}
 			}
 		}
-		/* ¿ØÖÆ¼ü£ºkey_msg_down µÄ key ÊÇĞéÄâ¼üÂë */
+		/* æ§åˆ¶é”®ï¼škey_msg_down çš„ key æ˜¯è™šæ‹Ÿé”®ç  */
 		else if (k.msg == key_msg_down) {
-			if (k.key == 8) { /* VK_BACK ÍË¸ñ */
+			if (k.key == 8) { /* VK_BACK é€€æ ¼ */
 				len = (int)strlen(g_joinIp);
 				if (len > 0) {
 					g_joinIp[len - 1] = '\0';
 					set_message("");
 				}
-			} else if (k.key == 13) { /* VK_RETURN »Ø³µ */
+			} else if (k.key == 13) { /* VK_RETURN å›è½¦ */
 				if (try_connect())
 					return;
 			} else if (k.key == 27) { /* VK_ESCAPE */
@@ -706,7 +706,7 @@ static void net_join_frame(void) {
 		}
 	}
 
-	/* ´¦ÀíÊó±ê */
+	/* å¤„ç†é¼ æ ‡ */
 	while (input_poll(buttons, btnCount, 0, &ev)) {
 		g_hoverId = ev.buttonId;
 		if (ev.type == EVENT_BUTTON) {
@@ -727,7 +727,7 @@ static void net_join_frame(void) {
 }
 
 static void net_wait_frame(void) {
-	static const UiButton cancelButton = { 490, 470, 200, 44, BTN_NET_CANCEL, "·µ  »Ø" };
+	static const UiButton cancelButton = { 490, 470, 200, 44, BTN_NET_CANCEL, "è¿”  å›" };
 	UiButton buttons[1];
 	UiEvent  ev;
 	int      type;
@@ -742,7 +742,7 @@ static void net_wait_frame(void) {
 			return;
 		}
 		if (type == NET_MSG_CLOSE) {
-			set_message("Á¬½ÓÒÑ¶Ï¿ª¡£");
+			set_message("è¿æ¥å·²æ–­å¼€ã€‚");
 			net_close();
 			g_state = STATE_MENU;
 			return;
@@ -772,7 +772,7 @@ static void menu_frame(void) {
 	int             count   = ui_menu_buttons(&buttons);
 	UiEvent         ev;
 
-	/* Ëã·¨°Ù¿ÆÒ³Ä£Ê½£¨·­Ò³ä¯ÀÀ£© */
+	/* ç®—æ³•ç™¾ç§‘é¡µæ¨¡å¼ï¼ˆç¿»é¡µæµè§ˆï¼‰ */
 	if (g_showAlgoBook) {
 		UiButton bookButtons[3];
 		int      bookCount = ui_get_algo_buttons(g_algoPage, bookButtons, 3);
@@ -796,9 +796,9 @@ static void menu_frame(void) {
 		return;
 	}
 
-	/* ÄÑ¶ÈÏêÇéµ¯´°Ä£Ê½ */
+	/* éš¾åº¦è¯¦æƒ…å¼¹çª—æ¨¡å¼ */
 	if (g_showDiffDialog) {
-		/* ·ç¸ñ°´Å¥²¼¾ÖÍ³Ò»ÓÉ ui_get_style_buttons Ìá¹©£¨Óë»æÖÆ¹²ÓÃ£¬±ÜÃâÁ½´¦Î¬»¤×ø±ê£© */
+		/* é£æ ¼æŒ‰é’®å¸ƒå±€ç»Ÿä¸€ç”± ui_get_style_buttons æä¾›ï¼ˆä¸ç»˜åˆ¶å…±ç”¨ï¼Œé¿å…ä¸¤å¤„ç»´æŠ¤åæ ‡ï¼‰ */
 		UiButton styleButtons[9];
 		int      styleCount = ui_get_style_buttons(g_pendingLevel, styleButtons, 9);
 		UiButton dialogButtons[11];
@@ -806,10 +806,10 @@ static void menu_frame(void) {
 		int      si;
 
 		dialogButtons[0] = (UiButton) {
-			330, 668, 180, 40, BTN_DIFF_CONFIRM, "È·ÈÏÑ¡Ôñ"
+			330, 668, 180, 40, BTN_DIFF_CONFIRM, "ç¡®è®¤é€‰æ‹©"
 		};
 		dialogButtons[1] = (UiButton) {
-			650, 668, 180, 40, BTN_DIFF_CANCEL,  "È¡Ïû"
+			650, 668, 180, 40, BTN_DIFF_CANCEL,  "å–æ¶ˆ"
 		};
 
 		for (si = 0; si < styleCount; si++) {
@@ -820,7 +820,7 @@ static void menu_frame(void) {
 			g_hoverId = ev.buttonId;
 			if (ev.type == EVENT_BUTTON) {
 				if (ev.buttonId >= BTN_STYLE_NORMAL && ev.buttonId <= BTN_STYLE_ATTACK) {
-					/* ĞĞ1 À§ÄÑ+;ĞĞ2 ´óÊ¦+;ĞĞ3 ÆåÊ¥+(°´Å¥½ö°´ÄÑ¶È·ÅÖÃ,´Ë´¦¶µµ×) */
+					/* è¡Œ1 å›°éš¾+;è¡Œ2 å¤§å¸ˆ+;è¡Œ3 æ£‹åœ£+(æŒ‰é’®ä»…æŒ‰éš¾åº¦æ”¾ç½®,æ­¤å¤„å…œåº•) */
 					int reqLevel = LEVEL_HARD;
 					if (ev.buttonId >= BTN_STYLE_COUNTER && ev.buttonId <= BTN_STYLE_DOUBLE)
 						reqLevel = LEVEL_MASTER;
@@ -880,7 +880,7 @@ static void menu_frame(void) {
 		g_hoverId = ev.buttonId;
 
 		if (ev.type == EVENT_BUTTON) {
-			/* ÄÑ¶È°´Å¥£º´ò¿ªÏêÇéµ¯´° */
+			/* éš¾åº¦æŒ‰é’®ï¼šæ‰“å¼€è¯¦æƒ…å¼¹çª— */
 			if (ev.buttonId == BTN_LEVEL_BEGINNER || ev.buttonId == BTN_LEVEL_EASY ||
 			        ev.buttonId == BTN_LEVEL_NORMAL || ev.buttonId == BTN_LEVEL_HARD ||
 			        ev.buttonId == BTN_LEVEL_MASTER || ev.buttonId == BTN_LEVEL_GRANDMASTER) {
@@ -925,24 +925,24 @@ static void handle_net_message(int type, int row, int col) {
 		case NET_MSG_MOVE:
 			if (board_place(&g_board, row, col) == PLACE_OK) {
 				if (!announce_result()) {
-					set_message("¶Ô·½Âä×ÓÓÚ %c%d¡£", (char)('A' + col), row + 1);
+					set_message("å¯¹æ–¹è½å­äº %c%dã€‚", (char)('A' + col), row + 1);
 				}
 			}
 			break;
 		case NET_MSG_UNDO:
 			board_undo_steps(&g_board, 2);
-			set_message("¶Ô·½ÇëÇó»ÚÆå£¬ÒÑÍ¬²½»ØÍË¡£");
+			set_message("å¯¹æ–¹è¯·æ±‚æ‚”æ£‹ï¼Œå·²åŒæ­¥å›é€€ã€‚");
 			break;
 		case NET_MSG_RESIGN:
 			board_resign(&g_board, OPPONENT(g_info.humanColor));
-			set_message("¶Ô·½ÈÏÊä£¬±¾»ú»ñÊ¤¡£");
+			set_message("å¯¹æ–¹è®¤è¾“ï¼Œæœ¬æœºè·èƒœã€‚");
 			break;
 		case NET_MSG_RESTART:
 			board_init(&g_board);
-			set_message("¶Ô·½ÇëÇóÖØĞÂ¿ªÊ¼£¬±¾¾ÖÒÑÖØÖÃ¡£");
+			set_message("å¯¹æ–¹è¯·æ±‚é‡æ–°å¼€å§‹ï¼Œæœ¬å±€å·²é‡ç½®ã€‚");
 			break;
 		case NET_MSG_CLOSE:
-			set_message("¶Ô·½ÒÑ¶Ï¿ªÁ¬½Ó¡£");
+			set_message("å¯¹æ–¹å·²æ–­å¼€è¿æ¥ã€‚");
 			net_close();
 			g_state = STATE_MENU;
 			break;
@@ -986,9 +986,9 @@ static void game_frame(void) {
 				if (g_board.status != GAME_PLAYING) {
 					announce_result();
 				} else if (is_ai_turn()) {
-					set_message("ÏÖÔÚÊÇµçÄÔµÄ»ØºÏ£¬ÇëÉÔºò¡£");
+					set_message("ç°åœ¨æ˜¯ç”µè„‘çš„å›åˆï¼Œè¯·ç¨å€™ã€‚");
 				} else if (g_info.mode == MODE_NET && !is_local_turn()) {
-					set_message("ÏÖÔÚÊÇ¶Ô·½µÄ»ØºÏ£¬ÇëÉÔºò¡£");
+					set_message("ç°åœ¨æ˜¯å¯¹æ–¹çš„å›åˆï¼Œè¯·ç¨å€™ã€‚");
 				} else {
 					set_message("%s", board_place_error(PLACE_ERR_RANGE));
 				}
@@ -1015,11 +1015,11 @@ static void game_frame(void) {
 
 static void replay_frame(void) {
 	static const UiButton buttons[] = {
-		{ 790, 430, 170, 38, BTN_REPLAY_FIRST, "Ê×²½" },
-		{ 980, 430, 170, 38, BTN_REPLAY_PREV,  "ÉÏÒ»²½" },
-		{ 790, 476, 170, 38, BTN_REPLAY_NEXT,  "ÏÂÒ»²½" },
-		{ 980, 476, 170, 38, BTN_REPLAY_LAST,  "Ä©²½" },
-		{ 790, 540, 360, 42, BTN_REPLAY_BACK,  "·µ»ØÆåÆ×ÁĞ±í" }
+		{ 790, 430, 170, 38, BTN_REPLAY_FIRST, "é¦–æ­¥" },
+		{ 980, 430, 170, 38, BTN_REPLAY_PREV,  "ä¸Šä¸€æ­¥" },
+		{ 790, 476, 170, 38, BTN_REPLAY_NEXT,  "ä¸‹ä¸€æ­¥" },
+		{ 980, 476, 170, 38, BTN_REPLAY_LAST,  "æœ«æ­¥" },
+		{ 790, 540, 360, 42, BTN_REPLAY_BACK,  "è¿”å›æ£‹è°±åˆ—è¡¨" }
 	};
 	const int btnCount = 5;
 	UiEvent ev;

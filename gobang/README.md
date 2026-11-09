@@ -10,7 +10,7 @@
 
 ## 编译运行
 
-在 Windows 上准备 MinGW-w64 和 EGE 20.08，确保 EGE 安装包含 build_ege.bat 使用的 lib\devcpp\graphics64 库。在本目录的 PowerShell 中设置 MINGW_HOME 和 EGE_HOME，再运行脚本。
+在 Windows 上准备 TDM-GCC 4.9.2 x64（Dev-C++ 5.11 随附的 MinGW64）和 EGE 20.08，确保 EGE 安装包含 build_ege.bat 使用的 lib\devcpp\graphics64 库。在本目录的 PowerShell 中设置 MINGW_HOME 和 EGE_HOME，再运行脚本。
 
     $env:MINGW_HOME = 'C:\path\to\MinGW64'
     $env:EGE_HOME = 'C:\path\to\EGE20.08'
