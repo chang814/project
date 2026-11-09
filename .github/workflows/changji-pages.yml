@@ -1,0 +1,53 @@
+name: Check and deploy Changji
+
+on:
+  pull_request:
+    paths:
+      - 'changji/**'
+      - '.github/workflows/changji-pages.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'changji/**'
+      - '.github/workflows/changji-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: changji
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - run: npm run check
+      - run: node qa-content-v11.cjs
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: changji/dist
+      - uses: actions/deploy-pages@v4
+        id: deployment
