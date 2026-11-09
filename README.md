@@ -19,3 +19,7 @@
 ## 畅记 Changji
 
 网页可通过 Node.js 在本地运行，也可将项目中的 dist 目录用于静态托管。Electron 提供 Windows 桌面入口。仓库内附原创示例词条，自己的词库可在本地导入。
+
+## 仓库维护
+
+目录、命名、发布与 GrokBot 交接见[仓库管理准则](docs/repository-governance.md)。

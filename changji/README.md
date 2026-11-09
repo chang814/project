@@ -41,6 +41,7 @@
 - desktop/ 和 build/ 包含 Electron 入口及打包图标。
 - prepare-*.cjs 和 enhance-exam.cjs 是历史词库处理工具。重新生成词库需自行准备原始数据，运行应用无需重新生成。
 - qa-*.cjs 是验证脚本。运行 npm run check 执行基础检查，运行 node qa-content-v11.cjs 检查词库数据。部分历史界面检查另需 Playwright 和 Microsoft Edge。
+- docs/ 存放[产品调研](docs/product-research.md)和[复习算法计划](docs/review-algorithm-plan.md)。
 
 ## 许可与来源
 
