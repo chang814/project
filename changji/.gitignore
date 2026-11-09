@@ -1,0 +1,24 @@
+dictionary/
+dictionary.zip
+vocab-source.json
+vocab-source.txt
+*.zip
+qa-*.png
+node_modules/
+outputs/
+cet4-source.json
+
+release/
+dist/downloads/*.zip
+
+# Local settings and generated files
+.env
+.env.*
+!.env.example
+.openai/
+*.exe
+*.tar.gz
+*.log
+.DS_Store
+Thumbs.db
+/.local-vocabulary/

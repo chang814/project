@@ -1,0 +1,23 @@
+# Local credentials
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*.p12
+
+# IDE and OS files
+.idea/
+.vscode/
+.vs/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local and generated project files
+/gobang/docs/
+/gobang/obj/
+/gobang/*.layout
+/changji/dist/downloads/
+*.log
+*.tmp

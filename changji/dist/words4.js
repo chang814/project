@@ -1,0 +1,1 @@
+window.WORDS4=[{"word":"notice","zh":"注意到","en":"to become aware of something","definitions":["to become aware of something"]},{"word":"prepare","zh":"准备","en":"to get ready for something","definitions":["to get ready for something"]},{"word":"improve","zh":"改进","en":"to make something work better","definitions":["to make something work better"]}];
