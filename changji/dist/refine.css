@@ -750,3 +750,19 @@ button:disabled,select:disabled{opacity:var(--control-disabled);cursor:default;t
 :root[data-halo=off] :is(#word-wrap,#passage-line,#preview-scene)::before{content:none}
 @media(max-width:760px){#word-wrap{--halo-height:198px;--halo-width:min(calc(100vw - 78px),540px)}}
 @media(prefers-reduced-motion:reduce){:is(#word-wrap,#passage-line,#preview-scene)::before{transition:none;transform:translate(-50%,-50%)}}
+
+/* 2026-11-14 polish: smooth halo falloff, light-theme glow, passage halo on the text line, settings group trigger. */
+:is(#word-wrap,#passage-line,#preview-scene)::before{
+ background:var(--halo-color,var(--accent));
+ -webkit-mask-image:radial-gradient(ellipse closest-side at 49% 51%,#000 0%,rgb(0 0 0/.97) 10%,rgb(0 0 0/.885) 20%,rgb(0 0 0/.754) 30%,rgb(0 0 0/.593) 40%,rgb(0 0 0/.422) 50%,rgb(0 0 0/.262) 60%,rgb(0 0 0/.132) 70%,rgb(0 0 0/.047) 80%,rgb(0 0 0/.007) 90%,transparent 100%);
+ mask-image:radial-gradient(ellipse closest-side at 49% 51%,#000 0%,rgb(0 0 0/.97) 10%,rgb(0 0 0/.885) 20%,rgb(0 0 0/.754) 30%,rgb(0 0 0/.593) 40%,rgb(0 0 0/.422) 50%,rgb(0 0 0/.262) 60%,rgb(0 0 0/.132) 70%,rgb(0 0 0/.047) 80%,rgb(0 0 0/.007) 90%,transparent 100%);
+}
+:root:is([data-palette=snow],[data-palette=mist],[data-palette=sand]) :is(#word-wrap,#passage-line,#preview-scene){--halo-color:#fff;--halo-strength:.72}
+#passage-line{--halo-center:calc(32px + clamp(30px,4.3vw,64px)*.65)}
+@media(max-width:760px){#passage-line{--halo-center:calc(40px + clamp(30px,4.3vw,64px)*.65)}}
+#settings-dialog .lesson-button{display:inline-flex;align-items:center;justify-content:space-between;gap:12px;min-width:132px;white-space:nowrap}
+#settings-dialog .lesson-button span{margin:0}
+#settings-dialog .lesson-button svg{display:block;width:14px;height:14px;flex-shrink:0;fill:none;stroke:var(--secondary);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform 240ms}
+#settings-dialog .lesson-button[aria-expanded=true] svg{transform:rotate(180deg)}
+body:not([data-practice-mode=cloze]) #settings-dialog #passage-settings>.settings-section:first-child{margin-top:24px}
+@media(prefers-reduced-motion:reduce){#settings-dialog .lesson-button svg{transition:none}}
