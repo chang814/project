@@ -27,6 +27,10 @@ spacing:
   section: "40px"
 ---
 # Design System: 畅记
+## v1.2.0 · iOS 质感层
+
+`dist/polish.css` 最后加载，只改外观与动效：系统字体（-apple-system / PingFang SC 优先）；设置为 inset grouped 圆角卡片（14px）与 0.6px 分隔线；练习模式与设置分页为分段控件，滑块用弹性曲线（`--spring`）；iOS 开关 51×31；下拉菜单与设置面板使用磨砂材质（这是对下文“不使用装饰性 backdrop blur”的有意调整，只用于浮层材质，不用于装饰）；手机端设置为底部弹出面板。弹出类动效统一用 `cubic-bezier(.32,.72,0,1)`，按压缩放到 .965。光晕默认关闭（`inkWash` 需显式开启），开启时强度 .05 并模糊。prefers-reduced-motion 下所有过渡近乎即时。
+
 ## 当前视觉约束 · v1.1.2 r3 网页预览
 
 本节为当前规范，后文保留历史决策。最终样式以 `dist/refine.css` 为准，加载顺序为 style → ios → refine。Operate 模式保留单词居中、安静留白和三种练习方式，不新增练习页控件。正文使用 DMSans／系统中文；中文释义 16px/1.8、英文 15px/1.7、词性 14px。单词继续使用已选字体及字号。页脚签名不显示，历史 Kai 字体规则不代表当前界面。

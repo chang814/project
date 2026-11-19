@@ -1,0 +1,288 @@
+/* v1.2 · iOS 质感层。最后加载，只覆盖外观与动效，不改结构与交互逻辑。
+ * 原则：分组圆角卡片、细分隔线、分段控件滑块、系统字体、柔和弹性动效；
+ * 光晕默认关闭，开启时也只留很淡的一层。 */
+
+:root{
+  --ios-font:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","HarmonyOS Sans SC","MiSans","Microsoft YaHei UI","Segoe UI",system-ui,sans-serif;
+  --ios-fill:rgba(255,255,255,.055);
+  --ios-fill-strong:rgba(255,255,255,.085);
+  --ios-press:rgba(255,255,255,.12);
+  --ios-hair:rgba(255,255,255,.075);
+  --ios-thumb:rgba(255,255,255,.14);
+  --ios-thumb-shadow:0 3px 8px rgba(0,0,0,.22),0 1px 1px rgba(0,0,0,.18);
+  --ios-sheet:rgba(28,32,30,.86);
+  --ios-menu:rgba(38,43,40,.82);
+  --ios-shadow:0 30px 80px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.25);
+  --ios-label:var(--secondary);
+  --ease-ios:cubic-bezier(.32,.72,0,1);
+  --spring:linear(0,.009 1.1%,.037 2.3%,.141 4.8%,.29 7.5%,.552 12.1%,.738 16.2%,.857 20.2%,.934 24.6%,.979 29.3%,1.004 34.6%,1.015 40.7%,1.012 50%,1.003 64.8%,1);
+  --halo-strength:.05;
+  --ios-sheet-solid:#1b1f1d;
+}
+:root:is([data-palette=snow],[data-palette=mist],[data-palette=sand]){
+  --ios-fill:rgba(0,0,0,.035);
+  --ios-fill-strong:rgba(0,0,0,.055);
+  --ios-press:rgba(0,0,0,.08);
+  --ios-hair:rgba(0,0,0,.08);
+  --ios-thumb:#fff;
+  --ios-thumb-shadow:0 3px 8px rgba(0,0,0,.12),0 1px 1px rgba(0,0,0,.06);
+  --ios-sheet:rgba(250,251,250,.9);
+  --ios-menu:rgba(255,255,255,.86);
+  --ios-shadow:0 30px 80px rgba(20,30,25,.18),0 8px 24px rgba(20,30,25,.1);
+}
+:root:is([data-palette=snow],[data-palette=mist],[data-palette=sand]){--ios-sheet-solid:#f8f9f8}
+:root[data-palette=nordic]{--ios-sheet:rgba(27,34,42,.88);--ios-menu:rgba(36,45,55,.84);--ios-sheet-solid:#1a2129}
+:root[data-palette=warm]{--ios-sheet-solid:#201d1b;--ios-sheet:rgba(33,30,27,.88);--ios-menu:rgba(44,40,36,.84)}
+:root[data-palette=graphite]{--ios-sheet-solid:#1d1f23;--ios-sheet:rgba(30,32,36,.88);--ios-menu:rgba(42,45,50,.84)}
+:root[data-palette=ocean]{--ios-sheet-solid:#13252b;--ios-sheet:rgba(20,38,44,.88);--ios-menu:rgba(28,50,57,.84)}
+
+/* Interface type; the practice word keeps its own chosen family. */
+body,button,select,input,textarea,dialog,#toast,.choice-trigger,.choice-option{font-family:var(--ios-font);-webkit-font-smoothing:antialiased;letter-spacing:0}
+
+/* ---------- 光晕：几乎没有 ---------- */
+:is(#word-wrap,#passage-line,#preview-scene)::before{opacity:var(--halo-strength)!important;filter:blur(10px)}
+:is(#word-wrap,#passage-line,#preview-scene)[data-halo-moving]::before{--halo-scale:1.02;--halo-rise:1.01}
+:root[data-halo=off] :is(#word-wrap,#passage-line,#preview-scene)::before{content:none}
+.stage.success .word-wrap:after{opacity:.35}
+
+/* ---------- 按压手感：所有可点元素 ---------- */
+button,.choice-trigger,.choice-option,.group-option,.import-label,summary{
+  -webkit-tap-highlight-color:transparent;
+  transition:background-color 180ms var(--ease-ios),color 180ms var(--ease-ios),box-shadow 220ms var(--ease-ios),transform 420ms var(--spring),opacity 180ms var(--ease-ios);
+}
+:is(button,.choice-trigger,.group-option,.import-label):not(:disabled):active{transform:scale(.965);transition-duration:90ms}
+.choice-option:active{transform:none}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:10px}
+
+/* ---------- 分段控件：练习模式与设置分页 ---------- */
+.modes,#settings-dialog .settings-tabs{
+  position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;
+  padding:3px;border-radius:11px;background:var(--ios-fill);border:0;box-shadow:none;min-height:0;
+}
+.modes:before,#settings-dialog .settings-tabs:before{
+  content:"";position:absolute;z-index:0;top:3px;bottom:3px;left:3px;height:auto;
+  width:calc((100% - 6px) / 3);border-radius:8px;background:var(--ios-thumb);box-shadow:var(--ios-thumb-shadow);opacity:1;
+  transform-origin:center;transition:transform 520ms var(--spring),background-color 200ms var(--ease-ios)!important;
+}
+.modes:before{transform:translateX(calc(var(--mode-index,0) * 100%))}
+#settings-dialog .settings-tabs:before{transform:translateX(calc(var(--setting-index,0) * 100%))}
+.modes button,#settings-dialog .settings-tabs button{
+  position:relative;z-index:1;min-height:32px;padding:5px 14px;border:0;border-radius:8px;background:transparent!important;
+  color:var(--secondary);font-size:13.5px;font-weight:500;line-height:1.4;box-shadow:none;
+}
+.modes button.selected,#settings-dialog .settings-tabs button[aria-selected=true]{color:var(--text);font-weight:600}
+.modes button:hover:not(.selected),#settings-dialog .settings-tabs button:hover:not([aria-selected=true]){color:var(--text)}
+.modes button:active,#settings-dialog .settings-tabs button:active{transform:scale(.97)}
+#settings-dialog .settings-tabs{margin:14px 0 6px}
+
+/* ---------- 设置：底部弹出的磨砂面板 ---------- */
+#settings-dialog{
+  border:0;border-radius:28px;padding:22px 22px 0;width:min(560px,calc(100vw - 32px));
+  background:var(--ios-sheet);-webkit-backdrop-filter:saturate(1.6) blur(28px);backdrop-filter:saturate(1.6) blur(28px);
+  box-shadow:var(--ios-shadow);color:var(--text);
+}
+#settings-dialog::backdrop{background:rgba(0,0,0,.38);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+:root:is([data-palette=snow],[data-palette=mist],[data-palette=sand]) #settings-dialog::backdrop{background:rgba(20,30,25,.22)}
+#settings-dialog .dialog-heading h2{font-size:28px;font-weight:700;letter-spacing:-.02em}
+#settings-dialog .dialog-heading .icon-btn{
+  width:30px;height:30px;min-height:30px;border-radius:50%;background:var(--ios-fill-strong);color:var(--secondary);padding:0;
+}
+#settings-dialog .dialog-heading .icon-btn svg{width:14px;height:14px;stroke-width:2.4}
+#settings-dialog .dialog-heading .icon-btn:hover{background:var(--ios-press);color:var(--text)}
+#settings-dialog [role=tabpanel]{padding:4px 2px 28px;scroll-padding-top:12px}
+
+/* Section titles: small grey caps above each inset group. */
+#settings-dialog .settings-section{
+  margin:22px 4px 7px;font-size:12.5px;font-weight:500;letter-spacing:.02em;color:var(--ios-label);text-transform:none;
+}
+#settings-dialog [role=tabpanel]>.settings-section:first-child,#panel-feel .motion-controls>.settings-section:first-child{margin-top:6px}
+
+/* Inset grouped rows: one rounded card per run of rows, hairlines between. */
+#settings-dialog .setting-row{
+  position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  min-height:48px;margin:0;padding:6px 14px 6px 16px;background:var(--ios-fill);border-radius:0;
+  font-size:15px;line-height:1.45;color:var(--text);
+}
+#settings-dialog .setting-row:not(.setting-row+.setting-row,.setting-row+#lesson-picker+.setting-row){border-top-left-radius:14px;border-top-right-radius:14px}
+#settings-dialog .setting-row:not(:has(+.setting-row),:has(+#lesson-picker),:has(+#key-sound-preview)){border-bottom-left-radius:14px;border-bottom-right-radius:14px}
+#settings-dialog .setting-row+.setting-row:before,#settings-dialog #lesson-picker+.setting-row:before{
+  content:"";position:absolute;left:16px;right:0;top:0;height:1px;background:var(--ios-hair);transform:scaleY(.6);transform-origin:top;
+}
+
+/* Value pickers read like iOS: plain secondary text with a ⌃⌄ glyph. */
+#settings-dialog .choice-trigger,#settings-dialog #lesson-select{
+  min-width:0;width:auto;max-width:62%;min-height:34px;padding:6px 6px 6px 10px;margin:0 -4px 0 0;border-radius:9px;
+  background:transparent;color:var(--secondary);font-size:15px;font-weight:400;gap:6px;justify-content:flex-end;
+}
+#settings-dialog .choice-trigger:hover,#settings-dialog #lesson-select:hover,#settings-dialog .choice-trigger[aria-expanded=true],#settings-dialog #lesson-select[aria-expanded=true]{background:var(--ios-fill-strong);color:var(--text)}
+#settings-dialog .choice-trigger svg{width:12px;height:12px;opacity:.7;transition:transform 380ms var(--spring)}
+#settings-dialog .choice-trigger[aria-expanded=true] svg{transform:rotate(180deg)}
+
+/* 练习组 trigger: one tight line, same chevron as the other pickers. */
+#lesson-select{display:inline-flex!important;align-items:center;gap:0!important;white-space:nowrap;letter-spacing:0!important;justify-content:flex-end}
+#lesson-select>span{margin:0 .18em}
+#lesson-select>b{font-size:0;width:12px;height:12px;margin-left:6px;flex:none;opacity:.7;
+  background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center/contain no-repeat;
+  transition:transform 380ms var(--spring)}
+#lesson-select[aria-expanded=true]>b{transform:rotate(180deg)}
+
+/* Group picker opens as part of the same card. */
+#settings-dialog #lesson-picker{margin:0;padding:6px 10px 12px;background:var(--ios-fill)}
+#settings-dialog #lesson-picker:not(:has(+.setting-row)){border-radius:0 0 14px 14px}
+.lesson-picker-grid{gap:8px;max-height:260px;padding:2px}
+.group-option{border-radius:12px;padding:10px 12px;background:var(--ios-fill);border:0;text-align:left;min-height:56px}
+.group-option:hover{background:var(--ios-fill-strong)}
+.group-option[aria-pressed=true]{background:var(--ios-thumb);box-shadow:var(--ios-thumb-shadow);color:var(--text)}
+.group-option small{color:var(--secondary);font-size:12px}
+
+/* iOS switch: 51×31, white knob, springy travel. */
+#settings-dialog .setting-row input[type=checkbox]{
+  -webkit-appearance:none;appearance:none;position:relative;flex:none;width:51px;height:31px;margin:0;border-radius:31px;border:0;
+  background:var(--ios-fill-strong);box-shadow:inset 0 0 0 1px var(--ios-hair);cursor:pointer;
+  transition:background-color 260ms var(--ease-ios),box-shadow 260ms var(--ease-ios);
+}
+#settings-dialog .setting-row input[type=checkbox]:checked{background:var(--accent);box-shadow:none}
+#settings-dialog .setting-row input[type=checkbox]:before{
+  content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;
+  box-shadow:0 3px 8px rgba(0,0,0,.18),0 1px 1px rgba(0,0,0,.14),0 0 0 .5px rgba(0,0,0,.04);
+  transform:translateX(0);transition:transform 480ms var(--spring),width 200ms var(--ease-ios);
+}
+#settings-dialog .setting-row input[type=checkbox]:checked:before{transform:translateX(20px)}
+#settings-dialog .setting-row input[type=checkbox]:active:before{width:31px}
+#settings-dialog .setting-row input[type=checkbox]:checked:active:before{transform:translateX(16px)}
+
+/* Sliders: thin track, round white thumb. */
+#settings-dialog input[type=range]{-webkit-appearance:none;appearance:none;height:28px;background:transparent;accent-color:var(--accent)}
+#settings-dialog input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:var(--ios-fill-strong)}
+#settings-dialog input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;margin-top:-10px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25),0 0 0 .5px rgba(0,0,0,.06);transition:transform 300ms var(--spring)}
+#settings-dialog input[type=range]:active::-webkit-slider-thumb{transform:scale(1.12)}
+#settings-dialog input[type=range]::-moz-range-track{height:4px;border-radius:4px;background:var(--ios-fill-strong)}
+#settings-dialog input[type=range]::-moz-range-thumb{width:24px;height:24px;border:0;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+
+/* Text buttons inside settings. */
+#settings-dialog .key-sound-preview,#word-size-reset{
+  min-height:32px;padding:5px 12px;border-radius:9px;border:0;background:var(--ios-fill-strong);color:var(--accent);font-size:14px;font-weight:500;
+}
+#panel-feel #key-sound-preview{float:none;display:flex;align-items:center;width:100%;margin:0;min-height:46px;padding:0 16px;border-radius:0 0 14px 14px;background:var(--ios-fill);color:var(--accent);font-size:15px;font-weight:500;box-shadow:inset 0 .6px 0 var(--ios-hair);transform-origin:center}
+#panel-feel #key-sound-preview:hover{background:var(--ios-fill-strong)}
+#panel-feel #key-sound-preview:active{transform:none;background:var(--ios-press)}
+#panel-feel #key-sound-preview+.setting-row{margin-top:10px;border-radius:14px}
+#panel-feel #key-sound-preview+.setting-row:before{content:none}
+#settings-dialog #passage-settings>.settings-section:first-child{margin-top:24px}
+#panel-feel .sound-controls{margin-top:0}
+
+/* ---------- 手感页：预览固定在顶部，随时看到改动 ---------- */
+#panel-feel>.motion-lab{position:sticky;top:-4px;z-index:4;margin:0 0 2px;padding:4px 0 8px;background:transparent}
+#panel-feel>.motion-lab #motion-preview{background:linear-gradient(var(--ios-fill),var(--ios-fill)),var(--ios-sheet-solid)!important;box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
+#panel-feel .motion-lab #motion-preview{
+  display:block;width:100%;border:0;border-radius:18px;padding:0;background:var(--ios-fill);overflow:hidden;position:relative;
+}
+#panel-feel .motion-lab #preview-scene{border-radius:18px;min-height:96px;background:transparent}
+#panel-feel .motion-lab #preview-scene .preview-heading span{display:none}
+#motion-preview>#preview-status{
+  display:block!important;position:absolute;top:10px;right:12px;padding:2px 9px;border-radius:20px;
+  font-size:11.5px;line-height:1.6;color:var(--secondary);background:var(--ios-fill-strong);pointer-events:none;
+  transition:opacity 200ms var(--ease-ios);
+}
+#panel-feel .motion-controls{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+#panel-feel .motion-controls>.setting-row{flex-direction:column;align-items:stretch;gap:6px;border-radius:14px!important;padding:10px 12px}
+#panel-feel .motion-controls>.setting-row:before{content:none}
+#panel-feel .motion-controls>.setting-row .choice-trigger{max-width:none;width:100%;justify-content:space-between;margin:0;padding-left:0;color:var(--text)}
+
+/* ---------- 数据页 ---------- */
+#settings-dialog .settings-links{background:var(--ios-fill);border-radius:14px;overflow:hidden;padding:0;margin-top:6px}
+#settings-dialog .settings-links button{min-height:48px;border-radius:0;padding:0 14px 0 16px;background:transparent;font-size:15px;font-weight:400}
+#settings-dialog .settings-links button+button{box-shadow:inset 0 .6px 0 var(--ios-hair)}
+#settings-dialog .settings-links button:hover{background:var(--ios-fill-strong)}
+#settings-dialog .version-history{background:var(--ios-fill);border-radius:14px;padding:0 16px;margin:22px 0 0}
+#settings-dialog .version-history summary{min-height:48px;display:flex;align-items:center;font-size:15px;color:var(--text)}
+#settings-dialog .version-history article{padding:4px 0 14px;border-top:.6px solid var(--ios-hair)}
+#settings-dialog .release-info{margin:8px 4px 0;font-size:12.5px;color:var(--ios-label)}
+#settings-dialog .backup-note{margin:0 4px 10px;font-size:13px;line-height:1.6;color:var(--ios-label)}
+#settings-dialog .backup-actions{gap:10px}
+#settings-dialog .backup-actions .primary,#settings-dialog .backup-actions .import-label{
+  min-height:46px;border-radius:13px;font-size:15px;font-weight:600;background:var(--ios-fill-strong);color:var(--accent);
+}
+#settings-dialog .backup-actions .primary:hover,#settings-dialog .backup-actions .import-label:hover{background:var(--ios-press)}
+
+/* ---------- 下拉菜单：iOS 上下文菜单 ---------- */
+#choice-menu{
+  border-radius:14px;padding:5px;background:var(--ios-menu);
+  -webkit-backdrop-filter:saturate(1.8) blur(30px);backdrop-filter:saturate(1.8) blur(30px);
+  box-shadow:0 18px 50px rgba(0,0,0,.32),0 0 0 .5px var(--ios-hair);transform-origin:top right;
+}
+.choice-option{min-height:40px;padding:9px 34px 9px 12px;margin:0;border-radius:9px;color:var(--text);font-size:15px;position:relative}
+.choice-option+.choice-option{box-shadow:inset 0 .6px 0 var(--ios-hair)}
+.choice-option[aria-selected=true]{background:transparent;color:var(--text);font-weight:600}
+.choice-option:hover,.choice-option:focus-visible{background:var(--ios-fill-strong);box-shadow:none;outline:0}
+.choice-option:hover+.choice-option{box-shadow:none}
+.choice-option[aria-selected=true]:after{right:12px;color:var(--accent)}
+
+/* ---------- 练习页 ---------- */
+.session-line{gap:12px}
+.modes{width:min(330px,62vw);margin:0 auto}
+#quick-group,#practice-return,#mobile-settings,.header-actions .icon-btn{border-radius:10px}
+#quick-group{padding:6px 10px;background:transparent;color:var(--secondary);font-size:13.5px}
+#quick-group:hover{background:var(--ios-fill)}
+.session-track{height:3px;border-radius:3px;background:var(--ios-fill);overflow:hidden}
+.session-track i,#session-bar{border-radius:3px;transition:transform 520ms var(--spring)!important}
+.header-actions .icon-btn,#mobile-settings{width:36px;height:36px;min-height:36px;background:transparent}
+.header-actions .icon-btn:hover,#mobile-settings:hover{background:var(--ios-fill)}
+.phonetic .icon-btn,#favorite{border-radius:50%;width:34px;height:34px;min-height:34px}
+.phonetic .icon-btn:hover,#favorite:hover{background:var(--ios-fill)}
+#next,.word-actions button,#dictation-hint{border-radius:20px;padding:6px 14px;background:var(--ios-fill);border:0}
+#next:hover,.word-actions button:hover,#dictation-hint:hover{background:var(--ios-fill-strong)}
+
+/* Buttons used on other pages. */
+.primary{border-radius:13px;min-height:46px;padding:0 22px;font-weight:600;font-size:15px;border:0;box-shadow:none}
+.lesson-button,#practice-return,.record-tools>button:not(.choice-trigger),.list-row button{border-radius:11px;background:var(--ios-fill);border:0}
+.lesson-button:hover,#practice-return:hover,.record-tools>button:not(.choice-trigger):hover,.list-row button:hover{background:var(--ios-fill-strong)}
+
+/* ---------- 其他页面：分组卡片 ---------- */
+.view-heading h1{font-size:34px;font-weight:700;letter-spacing:-.025em}
+.search{border-radius:12px;background:var(--ios-fill);border:0;min-height:42px;padding:0 14px;font-size:15px}
+.search:focus-visible{background:var(--ios-fill-strong);outline:0;box-shadow:0 0 0 3px var(--focus-ring)}
+.record-tools .choice-trigger{border-radius:11px;background:var(--ios-fill);min-height:40px}
+.record-tools .choice-trigger:hover{background:var(--ios-fill-strong)}
+.record-metrics{gap:10px}
+.record-metric{background:var(--ios-fill);border-radius:16px;padding:16px 18px}
+.record-metric strong{font-size:28px;font-weight:650;letter-spacing:-.02em}
+.record-metric span{font-size:12.5px;color:var(--ios-label)}
+.record-section h2{font-size:13px;font-weight:500;color:var(--ios-label);margin:26px 4px 8px}
+.recall-summary .record-note{margin:10px 4px 0;font-size:12.5px;line-height:1.6;color:var(--ios-label)}
+#other-view .list-row{border-radius:0;background:var(--ios-fill)!important;padding:12px 16px;margin:0;border:0}
+#other-view .list-row:first-of-type{border-radius:14px 14px 0 0}
+#other-view .list-row:last-child{border-radius:0 0 14px 14px}
+#other-view .list-row+.list-row{box-shadow:inset 0 .6px 0 var(--ios-hair)}
+#other-view .list-row:hover{background:var(--ios-fill-strong)!important}
+.lessons button{border-radius:14px;background:var(--ios-fill);border:0}
+.lessons button:hover{background:var(--ios-fill-strong)}
+.empty .primary{min-width:180px}
+
+/* Toast: a soft pill. */
+#toast{border-radius:22px;padding:10px 18px;font-size:14px;font-weight:500;background:var(--ios-menu);color:var(--text);
+  -webkit-backdrop-filter:saturate(1.8) blur(24px);backdrop-filter:saturate(1.8) blur(24px);box-shadow:0 12px 34px rgba(0,0,0,.25),0 0 0 .5px var(--ios-hair);
+  transition:opacity 260ms var(--ease-ios),transform 520ms var(--spring)!important}
+
+/* ---------- 手机：设置变成底部弹出面板 ---------- */
+@media (max-width:640px){
+  #settings-dialog{width:100vw;max-width:100vw;height:calc(100svh - 44px)!important;margin:auto 0 0;inset:auto 0 0 0;border-radius:24px 24px 0 0;padding:10px 16px 0}
+  #settings-dialog:before{content:"";display:block;width:36px;height:5px;border-radius:5px;background:var(--ios-hair);margin:0 auto 8px}
+  #settings-dialog .dialog-heading h2{font-size:24px}
+  #panel-feel .motion-controls{grid-template-columns:1fr}
+  .modes{width:auto;flex:1}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{transition-duration:1ms!important;animation-duration:1ms!important}
+  :is(button,.choice-trigger,.group-option,.import-label):active{transform:none}
+}
+
+#panel-feel .ink-setting{margin-top:10px;border-radius:14px!important}
+#panel-feel .ink-setting:before{content:none}
+@media (max-width:640px){.modes button{padding:5px 6px;font-size:13px;white-space:nowrap}.modes{min-width:0;max-width:240px}}
+/* The scrollbar gutters sit outside the backdrop; dim them to match. */
+html{transition:background-color 320ms var(--ease-ios)}
+html:has(#settings-dialog[open]){background:color-mix(in srgb,var(--canvas) 62%,#000)}
+:root:is([data-palette=snow],[data-palette=mist],[data-palette=sand]):has(#settings-dialog[open]){background:color-mix(in srgb,var(--canvas) 78%,rgb(20,30,25))}
