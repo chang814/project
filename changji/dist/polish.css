@@ -115,7 +115,8 @@ button,.choice-trigger,.choice-option,.group-option,.import-label,summary{
   background:transparent;color:var(--secondary);font-size:15px;font-weight:400;gap:6px;justify-content:flex-end;
 }
 #settings-dialog .choice-trigger:hover,#settings-dialog #lesson-select:hover,#settings-dialog .choice-trigger[aria-expanded=true],#settings-dialog #lesson-select[aria-expanded=true]{background:var(--ios-fill-strong);color:var(--text)}
-#settings-dialog .choice-trigger svg{width:12px;height:12px;opacity:.7;transition:transform 380ms var(--spring)}
+#settings-dialog .choice-trigger,#settings-dialog #lesson-select{display:inline-flex!important;align-items:center;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+#settings-dialog .choice-trigger svg{width:12px;height:12px;flex:none;opacity:.7;transition:transform 380ms var(--spring)}
 #settings-dialog .choice-trigger[aria-expanded=true] svg{transform:rotate(180deg)}
 
 /* 练习组 trigger: one tight line, same chevron as the other pickers. */
@@ -134,7 +135,8 @@ button,.choice-trigger,.choice-option,.group-option,.import-label,summary{
 .group-option{border-radius:12px;padding:10px 12px;background:var(--ios-fill);border:0;text-align:left;min-height:56px}
 .group-option:hover{background:var(--ios-fill-strong)}
 .group-option[aria-pressed=true]{background:var(--ios-thumb);box-shadow:var(--ios-thumb-shadow);color:var(--text)}
-.group-option small{color:var(--secondary);font-size:12px}
+.group-option{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;font-size:15px;font-weight:600;line-height:1.25}
+.group-option small{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--secondary);font-size:12.5px;font-weight:400}
 
 /* iOS switch: 51×31, white knob, springy travel. */
 #settings-dialog .setting-row input[type=checkbox]{
@@ -208,16 +210,28 @@ button,.choice-trigger,.choice-option,.group-option,.import-label,summary{
 
 /* ---------- 下拉菜单：iOS 上下文菜单 ---------- */
 #choice-menu{
-  border-radius:14px;padding:5px;background:var(--ios-menu);
+  border-radius:14px;padding:4px 0;background:var(--ios-menu);
   -webkit-backdrop-filter:saturate(1.8) blur(30px);backdrop-filter:saturate(1.8) blur(30px);
   box-shadow:0 18px 50px rgba(0,0,0,.32),0 0 0 .5px var(--ios-hair);transform-origin:top right;
 }
-.choice-option{min-height:40px;padding:9px 34px 9px 12px;margin:0;border-radius:9px;color:var(--text);font-size:15px;position:relative}
-.choice-option+.choice-option{box-shadow:inset 0 .6px 0 var(--ios-hair)}
-.choice-option[aria-selected=true]{background:transparent;color:var(--text);font-weight:600}
-.choice-option:hover,.choice-option:focus-visible{background:var(--ios-fill-strong);box-shadow:none;outline:0}
-.choice-option:hover+.choice-option{box-shadow:none}
-.choice-option[aria-selected=true]:after{right:12px;color:var(--accent)}
+/* One row per option: a fixed check column on the left, text centred on the row. */
+.choice-option{
+  display:flex!important;align-items:center;gap:0;width:100%;min-height:44px;margin:0;padding:0 16px 0 40px;
+  border-radius:0;box-shadow:none!important;position:relative;
+  color:var(--text);font-size:15px;font-weight:400!important;line-height:1.25;text-align:left;
+  font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.choice-option+.choice-option:before{content:"";position:absolute;left:40px;right:0;top:0;height:1px;background:var(--ios-hair);transform:scaleY(.6);transform-origin:top}
+.choice-option[aria-selected=true]{background:transparent;color:var(--text)}
+.choice-option:hover,.choice-option:focus-visible{background:var(--ios-fill-strong);outline:0}
+.choice-option:active{background:var(--ios-press)}
+.choice-option:hover:before,.choice-option:hover+.choice-option:before,.choice-option:focus-visible:before,.choice-option:focus-visible+.choice-option:before{opacity:0}
+.choice-option[aria-selected=true]:after{
+  content:"";position:absolute;left:17px;top:50%;float:none;margin:0;width:5px;height:10px;
+  border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);border-radius:1px;
+  transform:translateY(-62%) rotate(42deg);
+}
+.choice-option .palette-preview{margin-left:auto}
 
 /* ---------- 练习页 ---------- */
 .session-line{gap:12px}
