@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-label="作品集：五子棋对战游戏与畅记英语练习">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#141816"/>
+      <stop offset="0.5" stop-color="#1a201c"/>
+      <stop offset="1" stop-color="#202a24"/>
+    </linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e3bf83"/>
+      <stop offset="1" stop-color="#c99a5b"/>
+    </linearGradient>
+    <radialGradient id="black" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#5a5a5a"/>
+      <stop offset="1" stop-color="#111"/>
+    </radialGradient>
+    <radialGradient id="white" cx="0.35" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cfcbc0"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#9fb5a2" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#9fb5a2" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+    <clipPath id="frame"><rect width="1200" height="420" rx="28"/></clipPath>
+    <clipPath id="wordclip"><rect class="typed" x="760" y="186" width="300" height="120"/></clipPath>
+    <style>
+      .title { font: 700 58px "Segoe UI", "Noto Sans", Arial, sans-serif; letter-spacing: -0.5px; }
+      .zh { font: 600 26px "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; letter-spacing: 2px; }
+      .sub { font: 400 18px "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      .word { font: 500 92px "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif; letter-spacing: -1px; }
+      .meaning { font: 500 20px "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      .tab { font: 600 15px "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      .chip { font: 600 15px "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      /* Stones drop in one by one over an 8s loop, then the five line up. */
+      .st { opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; animation: drop 8s ease-out infinite; }
+      @keyframes drop { 0% { opacity: 0; transform: scale(1.6); } 3% { opacity: 1; transform: scale(1); } 92% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+      .win { opacity: 0; animation: win 8s ease-in-out infinite; }
+      @keyframes win { 0%, 66% { opacity: 0; } 72%, 90% { opacity: 1; } 100% { opacity: 0; } }
+      .typed { animation: type 5s steps(5, end) infinite; }
+      @keyframes type { 0% { width: 0; } 50%, 88% { width: 300px; } 100% { width: 0; } }
+      .caret { animation: follow 5s steps(5, end) infinite; }
+      @keyframes follow { 0% { transform: translateX(-228px); } 50%, 88% { transform: translateX(0); } 100% { transform: translateX(-228px); } }
+    </style>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="420" fill="url(#bg)"/>
+
+    <!-- Title -->
+    <text x="64" y="104" class="title" fill="#eee8d6">Projects</text>
+    <text x="68" y="146" class="zh" fill="#d7b878">作品集 · 五子棋 &amp; 畅记</text>
+    <text x="68" y="180" class="sub" fill="#9aa69c">从课程团队作业，到每天都在用的小工具</text>
+    <g class="chip">
+      <rect x="64" y="208" width="88" height="32" rx="16" fill="#26302a"/>
+      <text x="108" y="229" text-anchor="middle" fill="#c9d3c4">C / C++</text>
+      <rect x="160" y="208" width="104" height="32" rx="16" fill="#26302a"/>
+      <text x="212" y="229" text-anchor="middle" fill="#c9d3c4">JavaScript</text>
+      <rect x="272" y="208" width="92" height="32" rx="16" fill="#26302a"/>
+      <text x="318" y="229" text-anchor="middle" fill="#c9d3c4">Electron</text>
+    </g>
+
+    <!-- Gobang board, tilted slightly -->
+    <g transform="translate(462 122) rotate(-6 130 130) scale(0.94)" filter="url(#shadow)">
+      <rect x="0" y="0" width="260" height="260" rx="14" fill="url(#wood)"/>
+      <g stroke="#7a5630" stroke-width="1.2" opacity="0.75">
+        <path d="M20 20 V240 M40 20 V240 M60 20 V240 M80 20 V240 M100 20 V240 M120 20 V240 M140 20 V240 M160 20 V240 M180 20 V240 M200 20 V240 M220 20 V240 M240 20 V240"/>
+        <path d="M20 20 H240 M20 40 H240 M20 60 H240 M20 80 H240 M20 100 H240 M20 120 H240 M20 140 H240 M20 160 H240 M20 180 H240 M20 200 H240 M20 220 H240 M20 240 H240"/>
+      </g>
+      <g fill="#7a5630"><circle cx="60" cy="60" r="3"/><circle cx="200" cy="60" r="3"/><circle cx="140" cy="140" r="3.4"/><circle cx="60" cy="200" r="3"/><circle cx="200" cy="200" r="3"/></g>
+      <!-- Black wins on the diagonal (80,80)…(160,160); white blocks both ends too late -->
+      <circle class="st" cx="120" cy="120" r="9" fill="url(#black)" style="animation-delay:0.00s"/>
+      <circle class="st" cx="140" cy="120" r="9" fill="url(#white)" style="animation-delay:0.45s"/>
+      <circle class="st" cx="100" cy="100" r="9" fill="url(#black)" style="animation-delay:0.90s"/>
+      <circle class="st" cx="80" cy="100" r="9" fill="url(#white)" style="animation-delay:1.35s"/>
+      <circle class="st" cx="140" cy="140" r="9" fill="url(#black)" style="animation-delay:1.80s"/>
+      <circle class="st" cx="180" cy="180" r="9" fill="url(#white)" style="animation-delay:2.25s"/>
+      <circle class="st" cx="120" cy="100" r="9" fill="url(#black)" style="animation-delay:2.70s"/>
+      <circle class="st" cx="60" cy="60" r="9" fill="url(#white)" style="animation-delay:3.15s"/>
+      <circle class="st" cx="80" cy="80" r="9" fill="url(#black)" style="animation-delay:3.60s"/>
+      <circle class="st" cx="100" cy="140" r="9" fill="url(#white)" style="animation-delay:4.05s"/>
+      <circle class="st" cx="160" cy="160" r="9" fill="url(#black)" style="animation-delay:4.50s"/>
+      <line class="win" x1="80" y1="80" x2="160" y2="160" stroke="#e05a4a" stroke-width="4" stroke-linecap="round" opacity="0"/>
+    </g>
+
+    <!-- Changji: a word that types itself -->
+    <circle cx="880" cy="250" r="230" fill="url(#halo)"/>
+    <g class="tab">
+      <rect x="760" y="118" width="64" height="30" rx="9" fill="#26302a"/>
+      <text x="792" y="138" text-anchor="middle" fill="#e6efe2">跟练</text>
+      <text x="866" y="138" text-anchor="middle" fill="#8d978e">听音拼写</text>
+      <text x="954" y="138" text-anchor="middle" fill="#8d978e">长句输入</text>
+    </g>
+    <text x="764" y="274" class="word" fill="#5f6d64">adapt</text>
+    <g clip-path="url(#wordclip)"><text x="764" y="274" class="word" fill="#e8f1e6">adapt</text></g>
+    <rect class="caret" x="992" y="200" width="3" height="88" rx="1.5" fill="#b7c6b9"/>
+    <text x="766" y="318" class="meaning" fill="#cfd8cc">适应</text>
+    <text x="766" y="346" class="sub" fill="#8d978e">to change how you act to suit a new situation</text>
+  </g>
+</svg>
