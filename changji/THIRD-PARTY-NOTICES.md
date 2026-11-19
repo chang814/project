@@ -6,4 +6,5 @@
 - 旧版词库取自 [kajweb/dict](https://github.com/kajweb/dict) 和 KyleBing/english-vocabulary。核对时未在 kajweb/dict 仓库找到明确覆盖词典数据的许可。KyleBing 仓库提供 [BSD-3-Clause](https://github.com/KyleBing/english-vocabulary/blob/master/LICENSE)，但旧版成品没有逐条记录两路来源。因此此副本移除了成品混合词库、原例句、考试节选和相关补丁，仅附原创示例词条和短文。
 - 词典读音：联网请求有道词典音频，不随安装包缓存或打包录音。https://dict.youdao.com/
 - 缺失的长句译文：用户按 Tab 后按需请求 MyMemory，仅发送当前句子，不发送学习记录；结果在本机缓存。https://mymemory.translated.net/doc/spec.php
+- 复习调度：`dist/review-scheduler.js` 的 FSRS-6 记忆模型公式与默认参数移植自 [open-spaced-repetition/ts-fsrs](https://github.com/open-spaced-repetition/ts-fsrs) v6.0.0（MIT 许可，Copyright (c) 2026 Open Spaced Repetition），只在本机计算。
 - Windows 版使用 Electron；打包版本带有 Electron LICENSE 和 Chromium LICENSES.chromium.html，保留原许可。https://www.electronjs.org/
